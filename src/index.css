@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+@custom-variant dark (&:where(.dark, .dark *)); 
+
+:root.dark {
+  color-scheme: dark;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
