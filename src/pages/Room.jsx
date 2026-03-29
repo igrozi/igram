@@ -331,7 +331,7 @@ const Room = () => {
                             <button onClick={() => navigate(`/profile/${userProfile?.username}`)} className="p-2.5 bg-indigo-600 dark:bg-indigo-700 rounded-xl text-white border-2 border-indigo-600 shadow-[0_0_20px_rgba(79,70,229,0.5)] hover:scale-105 transition-all">
                                 <User size={22} strokeWidth={3}/>
                             </button>
-                            <motion.button whileHover={{ scale: 1.08, backgroundColor: 'rgba(239, 68, 68, 0.2)', boxShadow: "0px 0px 25px rgba(239, 68, 68, 0.3)", rotate: [0, -1, 1, -1, 1, 0] }} whileTap={{ scale: 0.92 }} onClick={handleLogOut} className="p-2.5 bg-red-50 dark:bg-red-900/20 rounded-xl text-red-500 hover:bg-red-500 hover:text-white transition-all border-2 border-transparent">
+                            <motion.button whileHover={{ scale: 1.08, backgroundColor: 'rgba(253, 25, 25, 0.55)', boxShadow: "0px 0px 25px rgba(239, 68, 68, 0.3)", rotate: [0, -1, 1, -1, 1, 0] }} whileTap={{ scale: 0.92 }} onClick={handleLogOut} className="p-2.5 bg-red-50 dark:bg-red-900/20 rounded-xl text-red-500 hover:bg-red-500 hover:text-white transition-all border-2 border-transparent">
                                 <LogOut size={22}/>
                             </motion.button>
                         </div>
