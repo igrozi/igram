@@ -13,16 +13,6 @@ import { useNavigate } from 'react-router-dom';
 const heartBeat = { scale: [1, 1.2, 1], transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" } };
 const floatingHigh = { y: [0, -10, 0], transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" } };
 
-const slowFloat = {
-    y: [0, -8, 0, 8, 0],
-    transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
-};
-
-const slowFloatReverse = {
-    y: [0, 8, 0, -8, 0],
-    transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
-};
-
 const formatPhoneNumber = (value) => {
     if (!value) return '';
     const numbers = value.replace(/\D/g, '');
@@ -317,7 +307,7 @@ const Settings = () => {
                         whileHover={{ scale: 1.08, backgroundColor: 'rgba(239, 68, 68, 0.2)', boxShadow: "0px 0px 25px rgba(239, 68, 68, 0.3)", rotate: [0, -1, 1, -1, 1, 0] }}
                         whileTap={{ scale: 0.92 }}
                         onClick={handleLogOut} 
-                        className="w-full p-5 rounded-[2.5rem] border-4 border-red-500/20 text-red-500 font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3"
+                        className="w-full p-5 rounded-[2.5rem] border-4 border-red-500/20 text-red-500 font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3 cursor-pointer"
                     >
                         <LogOut size={18} /> <span>ВЫЙТИ</span>
                     </motion.button>
@@ -340,7 +330,6 @@ const Settings = () => {
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                         <div className="lg:col-span-8 space-y-10">
                             <motion.section 
-                                animate={slowFloat}
                                 className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-4 border-gray-300 dark:border-slate-800 rounded-[3.5rem] p-12 shadow-2xl relative overflow-hidden"
                             >
                                 <div className="absolute top-0 right-0 p-8 opacity-[0.03] dark:opacity-[0.07] pointer-events-none">
@@ -350,8 +339,8 @@ const Settings = () => {
                                 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                                     <div className="flex flex-col">
-                                        <label className="text-xs font-black text-gray-500 dark:text-slate-400 uppercase tracking-widest ml-6 mb-3">ОТОБРАЖАЕМОЕ ИМЯ</label>
-                                        <div className="relative"><User className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" size={24} /><input type="text" value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} className="w-full bg-gray-100 dark:bg-slate-800 border-4 border-gray-200 dark:border-slate-700 p-6 pl-16 rounded-[2rem] font-bold text-lg dark:text-white focus:border-indigo-600 outline-none transition-all" /></div>
+                                        <label className="text-xs font-black text-gray-500 dark:text-slate-400 uppercase tracking-widest ml-6 mb-3 ">ОТОБРАЖАЕМОЕ ИМЯ</label>
+                                        <div className="relative"><User className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 " size={24} /><input type="text" value={profile.name} onChange={e => setProfile({...profile, name: e.target.value})} className="w-full bg-gray-100 dark:bg-slate-800 border-4 border-gray-200 dark:border-slate-700 p-6 pl-16 rounded-[2rem] font-bold text-lg dark:text-white focus:border-indigo-600 outline-none transition-all" /></div>
                                     </div>
                                     <div className="flex flex-col">
                                         <label className="text-xs font-black text-gray-500 dark:text-slate-400 uppercase tracking-widest ml-6 mb-3">ТЕЛЕФОН</label>
@@ -360,7 +349,7 @@ const Settings = () => {
                                     <div className="md:col-span-2 flex flex-col">
                                         <div className="flex items-center justify-between ml-6 mb-3">
                                             <label className="text-xs font-black text-gray-500 dark:text-slate-400 uppercase tracking-widest">ПОЧТА</label>
-                                            <button type="button" onClick={() => { setEditingEmail(!editingEmail); if(!editingEmail) setSecureData({...secureData, newEmail: secureData.email}); }} className={`text-xs font-black uppercase flex items-center gap-2 ${editingEmail ? 'text-red-500' : 'text-indigo-600'}`}>{editingEmail ? <><X size={12}/> CANCEL</> : <><Pencil size={12}/> EDIT</>}</button>
+                                            <button type="button" onClick={() => { setEditingEmail(!editingEmail); if(!editingEmail) setSecureData({...secureData, newEmail: secureData.email}); }} className={`text-xs font-black uppercase flex items-center gap-2 cursor-pointer ${editingEmail ? 'text-red-500' : 'text-indigo-600'}`}>{editingEmail ? <><X size={12}/> CANCEL</> : <><Pencil size={12}/> EDIT</>}</button>
                                         </div>
                                         <div className="relative"><Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" size={24} /><input type="email" value={editingEmail ? secureData.newEmail : secureData.email} onChange={e => setSecureData({...secureData, newEmail: e.target.value})} readOnly={!editingEmail} className={`w-full p-6 pl-16 rounded-[2rem] font-bold text-lg border-4 transition-all ${editingEmail ? 'bg-white dark:bg-slate-800 border-indigo-600 text-indigo-600 shadow-xl' : 'bg-gray-100/50 dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 text-gray-500'}`} /></div>
                                     </div>
@@ -368,7 +357,6 @@ const Settings = () => {
                             </motion.section>
 
                             <motion.section 
-                                animate={slowFloatReverse}
                                 className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-4 border-gray-300 dark:border-slate-800 rounded-[3.5rem] p-12 shadow-2xl relative overflow-hidden"
                             >
                                 <div className="absolute top-0 right-0 p-8 opacity-[0.03] dark:opacity-[0.07] pointer-events-none">
@@ -383,8 +371,7 @@ const Settings = () => {
                         </div>
 
                         <div className="lg:col-span-4 space-y-10">
-                            <motion.div 
-                                animate={slowFloat}
+                            <motion.div
                                 className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-4 border-gray-300 dark:border-slate-800 rounded-[3.5rem] p-8 shadow-2xl relative overflow-hidden"
                             >
                                 <div className="absolute -bottom-6 -right-6 opacity-[0.03] dark:opacity-[0.07] pointer-events-none">
@@ -398,7 +385,6 @@ const Settings = () => {
                             </motion.div>
 
                             <motion.div 
-                                animate={slowFloatReverse}
                                 className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-[3.5rem] p-5 shadow-2xl text-white relative overflow-hidden group"
                             >
                                 <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12 pointer-events-none">
@@ -409,7 +395,7 @@ const Settings = () => {
                                     <p className="text-xs font-black uppercase tracking-[0.3em] opacity-80">ПОДТВЕРЖДЕНИЕ</p>
                                 </div>
                                 <input type="password" required value={secureData.currentPassword} onChange={e => setSecureData({...secureData, currentPassword: e.target.value})} placeholder="ТЕКУЩИЙ ПАРОЛЬ" className="w-full bg-white/10 border-4 border-white/20 p-6 rounded-[2rem] font-black text-white placeholder-white/30 outline-none text-lg mb-6 shadow-inner focus:bg-white/20 transition-all relative z-10 text-center" />
-                                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading} className="w-full bg-white text-indigo-600 py-6 rounded-[2rem] font-black uppercase tracking-widest shadow-xl flex items-center justify-center gap-4 disabled:opacity-50 relative z-10">
+                                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={loading} className="w-full bg-white text-indigo-600 py-6 rounded-[2rem] font-black uppercase tracking-widest shadow-xl flex items-center justify-center gap-4 disabled:opacity-50 relative z-10 cursor-pointer">
                                     {loading ? <Loader2 className="animate-spin" size={24}/> : <><Save size={24}/><span>СОХРАНИТЬ ИЗМЕНЕНИЯ</span></>}
                                 </motion.button>
                             </motion.div>
