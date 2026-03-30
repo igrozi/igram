@@ -87,7 +87,8 @@ const Auth = () => {
         setTagStatus({ loading: false, available: false, message: "Taken" });
       else
         setTagStatus({ loading: false, available: true, message: "Available" });
-    } catch {
+    } catch (err) {
+      console.error("Username check error:", err);
       setTagStatus({ loading: false, available: null, message: "" });
     }
   }, []);
@@ -108,7 +109,13 @@ const Auth = () => {
     setLoading(true);
     setError(null);
     try {
-      try { await account.deleteSession("current"); } catch (error) { console.error("Ошибка при удалении сессии:", error); }
+      // Попытка удалить сессию (игнорируем ошибку)
+      try { 
+        await account.deleteSession("current"); 
+      } catch (error) { 
+        console.log("No active session to delete"); 
+      }
+      
       if (isLogin) {
         await account.createEmailPasswordSession(data.email, data.password);
         navigate("/");
@@ -138,7 +145,12 @@ const Auth = () => {
         navigate("/");
       }
     } catch (err) {
-      setError(err.message);
+      console.error("Auth error:", err);
+      if (err.message.includes('CORS') || err.message.includes('fetch')) {
+        setError("Network error. Please check your connection and try again.");
+      } else {
+        setError(err.message || "Authentication failed");
+      }
     } finally {
       setLoading(false);
     }
@@ -220,7 +232,7 @@ const Auth = () => {
             <div className="relative group">
               <Lock className={`absolute left-4 top-1/2 -translate-y-1/2 ${isLogin ? "text-indigo-400/50" : !isLogin && passStatus.valid === false ? "text-red-500" : "text-emerald-400/50"}`} size={20} />
               <input type={showPassword ? "text" : "password"} value={data.password} placeholder="Password" required className={inputStyle(isLogin ? "indigo" : "emerald", !isLogin && passStatus.valid === false)} onChange={(e) => setData({ ...data, password: e.target.value })} />
-              <motion.button whileTap={{ scale: 0.8 }} type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg border transition-all duration-300 ${isLogin ? "border-indigo-500/20 text-indigo-400/40 hover:text-indigo-400 hover:border-indigo-500/60 hover:bg-indigo-500/10" : "border-emerald-500/20 text-emerald-400/40 hover:text-emerald-400 hover:border-emerald-500/60 hover:bg-emerald-500/10"}`}>
+              <motion.button whileTap={{ scale: 0.8 }} type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg border transition-all duration-300 cursor-pointer ${isLogin ? "border-indigo-500/20 text-indigo-400/40 hover:text-indigo-400 hover:border-indigo-500/60 hover:bg-indigo-500/10" : "border-emerald-500/20 text-emerald-400/40 hover:text-emerald-400 hover:border-emerald-500/60 hover:bg-emerald-500/10"}`}>
                 {showPassword ? <EyeOff size={18} strokeWidth={2.5} /> : <Eye size={18} strokeWidth={2.5} />}
               </motion.button>
               {!isLogin && (
@@ -247,13 +259,13 @@ const Auth = () => {
               </AnimatePresence>
             </div>
 
-            <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} className={`w-full py-5 rounded-xl font-black text-lg uppercase tracking-[0.2em] border-b-[6px] transition-all active:border-b-[2px] shadow-xl ${isLogin ? "bg-indigo-600 border-indigo-900 text-white" : "bg-emerald-600 border-emerald-900 text-white"}`}>
+            <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} type="submit" disabled={loading} className={`w-full py-5 rounded-xl font-black text-lg uppercase tracking-[0.2em] border-b-[6px] transition-all active:border-b-[2px] shadow-xl cursor-pointer disabled:cursor-not-allowed ${isLogin ? "bg-indigo-600 border-indigo-900 text-white" : "bg-emerald-600 border-emerald-900 text-white"}`}>
               {loading ? "..." : isLogin ? "Sign In" : "Create Account"}
             </motion.button>
           </form>
 
           <div className="mt-8 text-center">
-            <button onClick={toggleMode} className={`font-black uppercase tracking-[0.2em] text-[12px] pb-1 border-b-2 transition-all ${isLogin ? "text-slate-500 border-transparent hover:text-indigo-400 hover:border-indigo-400" : "text-slate-500 border-transparent hover:text-emerald-400 hover:border-emerald-400"}`}>
+            <button onClick={toggleMode} className={`font-black uppercase tracking-[0.2em] text-[12px] pb-1 border-b-2 transition-all cursor-pointer ${isLogin ? "text-slate-500 border-transparent hover:text-indigo-400 hover:border-indigo-400" : "text-slate-500 border-transparent hover:text-emerald-400 hover:border-emerald-400"}`}>
               {isLogin ? "Dont have account? Register" : "Already registered? Sign In"}
             </button>
           </div>
